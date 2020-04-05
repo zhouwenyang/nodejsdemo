@@ -29,3 +29,9 @@ jobs:
     - run: npm test
       env:
         CI: true
+    - name: 'Deploy to Azure WebApp'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: tonkotsu-a
+        publish-profile: ${{ appservicestaging }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}

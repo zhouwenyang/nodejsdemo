@@ -9,6 +9,12 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  AZURE_WEBAPP_NAME: 'tonkotsu-a'    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '10.x'                # set this to the node version to use
+
+
 jobs:
   build:
 
@@ -29,3 +35,9 @@ jobs:
     - run: npm test
       env:
         CI: true
+    - name: 'Deploy to Azure WebApp'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.appservicestaging }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
